@@ -1,0 +1,69 @@
+-- Sample Query: Retrieve the first 10 rows from the "projection_dynamo_kinesis_lamdba" table in the "dynamo-kinesis-lambda-catalog" database
+SELECT * 
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+LIMIT 10;
+
+-- Query 1: Basic Query to View All Data from the table
+SELECT * 
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+LIMIT 10;
+
+-- Query 2: Count Users by Age Group (e.g., 18-25, 26-40, etc.)
+SELECT 
+    CASE
+        WHEN age < 18 THEN 'Under 18'
+        WHEN age >= 18 AND age <= 25 THEN '18-25'
+        WHEN age >= 26 AND age <= 40 THEN '26-40'
+        WHEN age >= 41 AND age <= 60 THEN '41-60'
+        ELSE '60+'
+    END AS age_group,
+    COUNT(*) AS user_count
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+GROUP BY 
+    CASE
+        WHEN age < 18 THEN 'Under 18'
+        WHEN age >= 18 AND age <= 25 THEN '18-25'
+        WHEN age >= 26 AND age <= 40 THEN '26-40'
+        WHEN age >= 41 AND age <= 60 THEN '41-60'
+        ELSE '60+'
+    END
+ORDER BY user_count DESC;
+
+-- Query 3: Find the Most Recent User Profiles (based on `created_at`)
+SELECT id, name, created_at
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+ORDER BY created_at DESC
+LIMIT 5;
+
+-- Query 4: Get Users who Have Missing Phone Numbers
+SELECT id, name, email, phone_number
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+WHERE phone_number IS NULL;
+
+-- Query 5: Aggregate Users by City (Extracting City from Address JSON)
+SELECT json_extract(address, '$.city') AS city, COUNT(*) AS user_count
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+GROUP BY city
+ORDER BY user_count DESC;
+
+-- Query 6: Get Users Created Between Two Specific Dates
+SELECT id, name, created_at
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+WHERE created_at >= '2025-01-01' AND created_at <= '2025-05-01'
+ORDER BY created_at DESC;
+
+-- Query 7: Retrieve Users with a Specific Age and Email Domain
+SELECT id, name, email, age
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+WHERE age > 25 AND email LIKE '%@gmail.com';
+
+-- Query 8: Calculate the Average Age of Users
+SELECT AVG(age) AS avg_age
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba";
+
+-- Query 9: Find Users with Invalid or Missing Email
+SELECT id, name, email
+FROM "dynamo-kinesis-lambda-catalog"."projection_dynamo_kinesis_lamdba"
+WHERE email IS NULL OR email NOT LIKE '%@%';
+
+
