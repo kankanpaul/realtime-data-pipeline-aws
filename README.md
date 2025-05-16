@@ -2,6 +2,9 @@
 
 This project demonstrates the process of ingesting, transforming, analyzing, and visualizing data using a set of AWS services. The system is designed to capture changes in data from a DynamoDB table and process it in real time, storing the results in Amazon S3 for further analysis with AWS Athena and local data visualization.
 
+![alt text]([path/to/your/image.jpg](https://github.com/kankanpaul/realtime-data-pipeline-aws/blob/main/DE%20architecture%20diagram.png))
+
+
 ## Stack Overview
 
 - **Python Mock Generator Script**: Generates mock data to populate the DynamoDB table.
